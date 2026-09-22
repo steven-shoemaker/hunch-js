@@ -23,6 +23,7 @@ hunch.configure({ apiKey: process.env.TYPESAFE_API_KEY, llm: hunch.anthropic(), 
 LLM adapters: `hunch.anthropic()` (needs @anthropic-ai/sdk), `hunch.openai()`, `hunch.azure({ deployment })`,
 `hunch.openrouter()`, `hunch.ollama("model")`, or any `(system, user) => text`. Only `generate`,
 `discover`, `refine`, and escalation need one. Never hardcode keys.
+To reach Jev through OpenRouter or Vercel AI Gateway: `configure({ gateway: "openrouter" | "vercel" })`.
 
 ## Pick the verb
 
@@ -39,6 +40,7 @@ LLM adapters: `hunch.anthropic()` (needs @anthropic-ai/sdk), `hunch.openai()`, `
 | Best of N, or none | `pick(candidates, "what best means", { none: true })` |
 | Order on weighted criteria | `rank(candidates, { dim: "question" }, levels, { weights, query })` |
 | Compare two things item by item | any verb on `hunch.pairs(a, b)` |
+| Turn answers into actions (queues, alerts) | `route(answers, { page: { urgent: 0.8 }, billing: { topic: ["billing", 0.7] } }, { default })` |
 | Is an LLM/agent claim supported? | `verify(claims, source)` returns supported / contradicted / not mentioned / misquoted |
 | Unknown categories | `discover(items, n)` then `classify(items, result)` |
 | Draft text that must meet rules | `refine(text, checks, { context })` |

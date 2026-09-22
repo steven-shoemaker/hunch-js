@@ -62,6 +62,8 @@ hunch.ollama("qwen3")                      // a local model
 (system, user) => myGateway(system, user)  // anything else
 ```
 
+To reach Jev through a gateway your company already uses, pass `gateway: "openrouter"` (reads `OPENROUTER_API_KEY`) or `gateway: "vercel"` (reads `AI_GATEWAY_API_KEY`) to `configure`. Everything else works the same.
+
 Every verb also takes `{ client }` if you'd rather not use the default.
 
 ## The verbs
@@ -186,6 +188,24 @@ await hunch.verify(["skips None values", "adds a cache", 'says "filter out empty
 ```
 
 Checks each claim against one source, or one source per claim. It tells "the source says otherwise" apart from "the source doesn't say", which comes back as `"not mentioned"`. Text a claim puts in quotes must appear in the source word for word, which catches made-up quotes. Use it as the last step of anything an LLM or agent produced.
+
+### route: what happens next?
+
+```ts
+const answers = await hunch.ask(tickets, {
+  urgent: Check("needs a human within the hour"),
+  topic: Classify(["billing", "bug", "question"]),
+}, { detail: true });
+
+const queues = hunch.route(answers, {
+  page: { urgent: 0.8 },                      // P(yes) at least 0.8
+  billing: { topic: ["billing", 0.7] },       // this label, with P at least 0.7
+  docs: { topic: ["question", "how-to"] },    // any of these labels
+  review: { "topic.shape": "unsure" },        // Jev couldn't decide
+}, { default: "triage" });
+```
+
+Turns answers into actions. Rules are checked in order, and the first one whose conditions all hold wins; within a rule, every condition must hold. A number is a minimum probability (or score), a string is a label, a `[label, p]` pair is both, a list of strings means any of those labels, and a name ending in `.shape` checks the shape. It sends no requests, so you can change the rules and rerun for free.
 
 ### generate, discover, refine: with an LLM
 

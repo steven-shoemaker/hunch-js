@@ -9,6 +9,8 @@ export { Client, type ClientOptions, type JevLike, type Usage, configure, defaul
 export { type DiscoverOptions, type GenerateOptions, type Refined, type RefineOptions, type Verdict, VERDICTS, discover, generate, refine, verify } from "./combine.js";
 export { type Plan, dryRun } from "./engine.js";
 export { HunchError } from "./errors.js";
+export { jevConfidence, openRouterJev, vercelJev } from "./gateway.js";
+export { type Condition, type Rules, route } from "./route.js";
 export { type Evaluation, type Threshold, evaluate, tuneThreshold } from "./evaluate.js";
 export { type FieldSpec, type Finder, PATTERNS, extract } from "./extract.js";
 export { type LLMInput, type LanguageModel, anthropic, azure, cerebras, ollama, openAICompat, openai, openrouter } from "./llm.js";
@@ -41,4 +43,4 @@ export {
   where,
 } from "./verbs.js";
 
-export const VERSION = "0.1.0";
+export const VERSION = "0.2.0";

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.0
+
+- `route(answers, rules, { default })` turns answers into outcomes with ordered rules: minimum probabilities, labels, `[label, p]` pairs, label lists, shapes, or functions. Sends no requests.
+- `configure({ gateway: "openrouter" | "vercel" })` reaches Jev through OpenRouter or Vercel AI Gateway, with retries. `openRouterJev()` and `vercelJev()` are exported for custom clients.
+
 ## 0.1.0
 
 First release: a TypeScript port of [hunch for Python](https://github.com/steven-shoemaker/hunch) 0.9.

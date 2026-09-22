@@ -1,6 +1,6 @@
 {
   "name": "hunch-jev",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Jev judgments as TypeScript functions over arrays: classify, score, check, where, extract, pick, rank, verify. LLMs propose, Jev decides.",
   "license": "MIT",
   "author": "Steven Shoemaker",

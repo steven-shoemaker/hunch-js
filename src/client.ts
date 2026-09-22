@@ -1,6 +1,7 @@
 import { TypeSafeClient } from "@typesafe-ai/sdk";
 import { type CacheStore, MemoryCache, fileCache } from "./cache.js";
 import { HunchError } from "./errors.js";
+import { openRouterJev, vercelJev } from "./gateway.js";
 import { type LanguageModel, asLLM } from "./llm.js";
 import { ShapePolicy } from "./shapes.js";
 
@@ -16,6 +17,8 @@ export interface ClientOptions {
   model?: string;
   /** An existing TypeSafeClient, or any object with systemOne(). */
   client?: JevLike;
+  /** Reach Jev through "openrouter" (OPENROUTER_API_KEY) or "vercel" (AI_GATEWAY_API_KEY) instead of TypeSafe. */
+  gateway?: "typesafe" | "openrouter" | "vercel";
   /** LLM for generate / discover / refine / escalation: an adapter or a function (system, user) => text. */
   llm?: LanguageModel | ((system: string, user: string) => string | Promise<string>);
   /** A CacheStore, or a directory path for a file cache (Node). Defaults to memory. */
@@ -57,8 +60,17 @@ export class Client {
       throw new HunchError('errors must be "raise" or "skip".');
     }
     if (options.maxRps !== undefined && options.maxRps <= 0) throw new HunchError("maxRps must be positive.");
+    const gateway = options.gateway ?? "typesafe";
+    if (!["typesafe", "openrouter", "vercel"].includes(gateway)) throw new HunchError('gateway must be "typesafe", "openrouter", or "vercel".');
+    const viaGateway =
+      gateway === "openrouter"
+        ? openRouterJev({ apiKey: options.apiKey, ...(options.model ? { model: options.model } : {}) })
+        : gateway === "vercel"
+          ? vercelJev({ apiKey: options.apiKey, ...(options.model ? { model: options.model } : {}) })
+          : undefined;
     this.jev =
       options.client ??
+      viaGateway ??
       (new TypeSafeClient({
         ...(options.apiKey ? { apiKey: options.apiKey } : {}),
         ...(options.model ? { defaultModel: options.model } : {}),
