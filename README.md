@@ -236,10 +236,6 @@ const plan = await hunch.dryRun(async () => {
 - **Progress.** `onProgress(done, total, label)` fires after every request.
 - **Usage.** `hunch.defaultClient().usage` reports calls, cache hits, and tokens.
 
-## What this is not
-
-Jev never invents labels. Whatever you pass as labels is the whole set of allowed answers, and that constraint is the point. LLMs only propose. They have no tools and take no actions. If you want open-ended writing or a multi-step agent, this is the wrong library, on purpose.
-
 ## License
 
 MIT. Jev and TypeSafe are [typesafe.ai](https://typesafe.ai); this library is not affiliated.
