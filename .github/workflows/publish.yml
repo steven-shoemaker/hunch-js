@@ -17,7 +17,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-          registry-url: https://registry.npmjs.org
+          # no registry-url: it writes a placeholder token that npm would try before trusted publishing
       - run: npm install -g npm@latest
       - run: npm ci
       - run: npm run typecheck
