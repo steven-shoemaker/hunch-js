@@ -69,7 +69,6 @@
     "url": "https://github.com/steven-shoemaker/hunch-js/issues"
   },
   "publishConfig": {
-    "access": "public",
-    "provenance": true
+    "access": "public"
   }
 }
